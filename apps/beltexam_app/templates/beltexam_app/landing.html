@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login/Registration</title>
+    <link rel="stylesheet" href="{% static 'beltexam_app/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'beltexam_app/css/main.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Welcome!</h1>
+        <div class="error">
+        {% for message in messages %}
+         <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}   
+        </div>
+        <form action="/register" method="POST" class="register">
+            {% csrf_token %}
+            <h1>Registration</h1>   
+
+            <label for="name">Name:</label>
+            <input type="text" name="name" class="form-control" value="{{request.session.name}}">
+
+            <label for="user_name">User Name:</label>
+            <input type="text" name="user_name" class="form-control" value="{{request.session.user_name}}">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" class="form-control">
+
+            <span>*Password should be at least 8 characters</span>
+
+            <label for="cpassword">Confirm Password:</label>
+            <input type="password" name="cpassword" class="form-control">
+
+            <div class="text-right">
+                <input type="submit" value="Register" class="btn btn-primary">
+            </div>
+        </form>
+        <form action="/login" method="POST" class="login">
+            {% csrf_token %}
+            <h1>Login</h1>
+            <label for="user_name">User Name:</label>
+            <input type="text" name="user_name" class="form-control" value="{{request.session.user_name}}">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" class="form-control">
+
+            <div class="text-right">
+                <input type="submit" value="Login" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Destination</title>
+    <link rel="stylesheet" href="{% static 'beltexam_app/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'beltexam_app/css/main.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="success">
+        {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}    
+        </div>
+        <div class="header text-right">
+            <form action="/travels" method="POST">
+                {% csrf_token %}
+                <div class="text-right">
+                    <input type="submit" value="Home" class="btn btn-secondary">
+                </div>
+            </form>
+            <form action="/logout" method="POST">
+                {% csrf_token %}
+                <div class="text-right">
+                    <input type="submit" value="Log out" class="btn btn-danger">
+                </div>
+            </form>
+        </div>
+        <div class="destination">
+            <h2>{{ destination.destination }}</h2>
+            <p>Planned by: {{ destination.planned_by.name }}</p>
+            <p>Description: {{ destination.description }}</p>
+            <p>Travel Start Date: {{ destination.start_date }}</p>
+            <p>Travel End Date: {{ destination.end_date }}</p>
+        </div>
+        <div class="othersjoining">
+            <h2>Other users joining the trip:</h2>
+          
+
+            {% for user in destination.users_going.all %}
+                {% if user.name != destination.planned_by.name %}
+                <p>{{user.name}}</p>
+                {% endif %}
+            {% endfor %}
+           
+        </div>
+    </div>
+</body>
+</html>

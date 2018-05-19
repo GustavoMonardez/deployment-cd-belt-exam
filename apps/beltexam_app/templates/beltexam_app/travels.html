@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Travels</title>
+    <link rel="stylesheet" href="{% static 'beltexam_app/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'beltexam_app/css/main.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="success">
+        {% for message in messages %}
+        <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}    
+        </div>
+        <div class="header text-right">
+            <form action="/logout" method="POST">
+            {% csrf_token %}
+            <div class="text-right">
+                <input type="submit" value="Log out" class="btn btn-danger">
+            </div>
+            </form>
+        </div>
+        <h1>Hello {{ request.session.user_name }}!</h1>
+        <div class="mytrips">
+            <h2>Your Trip Schedules</h2>
+            <table class="table">
+                <tr>
+                    <th>Destination</th>
+                    <th>Travel Start Date</th>
+                    <th>Travel End Date</th>
+                    <th>Plan</th>
+                </tr>
+                {% for trip in travels %}
+                <tr>
+                    <td><a href="/travels/destination/{{ trip.id }}">{{ trip.destination }}</a></td>
+                    <td>{{ trip.start_date|date:"M d, Y" }}</td>
+                    <td>{{ trip.end_date|date:"M d, Y"}}</td>
+                    <td>{{ trip.description }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="othertrips">
+            <h2>Other User's Travel Plans</h2>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Destination</th>
+                    <th>Travel Start Date</th>
+                    <th>Travel End Date</th>
+                    <th>Do you want to join?</th>
+                </tr>
+                {% for trip in others %}
+                <tr>
+                    <td>{{ trip.planned_by.name }}</td>
+                    <td><a href="/travels/destination/{{ trip.id }}">{{ trip.destination }}</a></td>
+                    <td>{{ trip.start_date|date:"M d, Y" }}</td>
+                    <td>{{ trip.end_date|date:"M d, Y"}}</td>
+                    <td>{{ trip.description }}</td>
+                    <td>
+                        <form action="/travels/jointrip" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ trip.id }}">
+                            <div class="text-right">
+                                <input type="submit" value="Join" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <form action="/travels/add">
+            {% csrf_token %}
+            <div class="text-right">
+                <input type="submit" value="Add Travel Plan" class="btn btn-success">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

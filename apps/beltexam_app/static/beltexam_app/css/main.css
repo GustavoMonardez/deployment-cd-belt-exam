@@ -1,0 +1,40 @@
+*{
+    margin:0px;
+    padding:0px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 13px;
+}
+
+.wrapper{
+    width: 970px;
+    margin:auto;
+    padding:20px;
+}
+
+.header form{
+    display: inline-block;
+}
+.register, .login, .add-trip{
+    width:400px;
+}
+
+.register h1, .login h1, .add-trip h1, h2{
+    color:gray;
+    font-size:26px;
+}
+
+.register .text-right, .login .text-right{
+    margin-top:10px;
+}
+
+.success{
+    color:#5cb85c;
+}
+
+.error{
+    color:#d9534f;
+}
+
+.add{
+    margin-top:10px;
+}
